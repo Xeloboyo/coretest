@@ -38,9 +38,9 @@ public class Bullet{
     int splitanglestart;
     boolean spliteven;
     
-    boolean bounce=false;
+    int bounce=0;
 
-    public Bullet(float dmg, float x, float y, float rot, float vel, boolean shootable, float hp,float follow,boolean bounce) {
+    public Bullet(float dmg, float x, float y, float rot, float vel, boolean shootable, float hp,float follow,int bounce) {
         this.dmg = dmg;
         this.x = x;
         this.y = y;
@@ -53,9 +53,10 @@ public class Bullet{
         this.follow = follow;
         vx = sin(radians(rot))*vel;
         vy = -cos(radians(rot))*vel;
+        this.bounce=bounce;
     }
     
-    public Bullet(float dmg, float x, float y, float rot, float vel, boolean shootable, float hp,float follow,boolean bounce, 
+    public Bullet(float dmg, float x, float y, float rot, float vel, boolean shootable, float hp,float follow,int bounce, 
             Bullet Split, int splitamount, int splitanglespr, int splitanglestart,boolean spliteven) {
         this.dmg = dmg;
         this.x = x;
@@ -69,6 +70,12 @@ public class Bullet{
         this.follow = follow;
         vx = sin(radians(rot))*vel;
         vy = -cos(radians(rot))*vel;
+        this.bounce=bounce;
+        this.split=Split;
+        this.splitamount=splitamount;
+        this.splitanglespread =splitanglespr;
+        this.splitanglestart = splitanglestart;
+        this.spliteven = spliteven;
     }
   
     Bullet(float x,float y,float rot,float vel,float dmg){
@@ -99,6 +106,12 @@ public class Bullet{
         size=sqrt(dmg)*2;
         sizemult = size/vel;
         this.setShootable(b.shootable);
+        this.bounce=b.bounce;
+        this.split=b.split;
+        this.splitamount=b.splitamount;
+        this.splitanglespread =b.splitanglespread;
+        this.splitanglestart = b.splitanglestart;
+        this.spliteven = b.spliteven;
     }
     public void setShootable(boolean shootable) {
         if(enemy){
@@ -111,7 +124,7 @@ public class Bullet{
         sizemult = size/vel;
         fx.add(new Trail(x, y, (int)(5+(dmg/10)),sizemult/3f, c, this));
     }
-  
+    
     void setDir(float rot,float vel){
         this.rot=rot;
         this.vel=vel;
@@ -156,16 +169,27 @@ public class Bullet{
         lived++;
         x+=vx*speed;
         y+=vy*speed;
-        if(y>my-wy+wh){
-          destroy=true;
-        }else if(y<my-wy){
-          destroy=true;
+        if(y>my-wy+wh||y<my-wy){
+          if(bounce>0){
+              bounce--;
+              vy=-vy;
+              setDir(vx,vy,vel);
+              y = clamp(y, my-wy,my-wy+wh);
+          }else{ 
+            destroy=true;
+          }
         }
 
-        if(x>mx-wx+ww){
-          destroy=true;
-        }else if(x<mx-wx){
-          destroy=true;
+        if(x>mx-wx+ww||x<mx-wx){
+          if(bounce>0){
+              bounce--;
+              vx=-vx;
+              setDir(vx,vy,vel);
+              x = clamp(x, mx-wx,mx-wx+ww);
+          }else{ 
+            destroy=true;
+          }  
+          
         }
         if(follow!=0){
           float anglediff=0;
