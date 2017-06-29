@@ -68,7 +68,7 @@ static int screen = 0;
         setup();
         TinySound.init();
         File f = new File("music\\test.wav");
-        println(f.exists()+"ESOT");
+        //println(f.exists()+"ESOT");
         MemMusic test = (MemMusic)TinySound.loadMusic(f);
         test.setLoop(true);
         test.setLoopPositionBySeconds(1);

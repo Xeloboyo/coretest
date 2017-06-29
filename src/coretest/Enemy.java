@@ -17,10 +17,10 @@ import java.util.Arrays;
  */
 
 enum bulletList{
-    BASIC(new Bullet(13, 0, 0, 0, 4.5f, false, 0, 0,false)),
-    BIGBASIC(new Bullet(30, 0, 0, 0, 6.5f, false, 0, 0,false)),
-    BIGHOMING(new Bullet(30, 0, 0, 0, 6.5f, false, 0, 8,false)),
-    FASTBOUNCING(new Bullet(20, 0, 0, 0, 8.5f, false, 0, 0,true)),;
+    BASIC(new Bullet(13, 0, 0, 0, 4.5f, false, 0, 0,0)),
+    BIGBASIC(new Bullet(30, 0, 0, 0, 6.5f, false, 0, 0,0)),
+    BIGHOMING(new Bullet(30, 0, 0, 0, 6.5f, false, 0, 8,0)),
+    FASTBOUNCING(new Bullet(20, 0, 0, 0, 8.5f, false, 0, 0,3)),;
     
     
     Bullet b;

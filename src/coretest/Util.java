@@ -40,15 +40,8 @@ public class Util {
     
       
     float u = ((px-lx)*(lx2-lx) + (py-ly)*(ly2-ly))/(distsqrd(lx,ly,lx2,ly2));
-    float x;
-    float y;
-    
     u = clamp(u, 0, 1);
-    
-    x = lx+u*(lx2-lx);
-    y = ly+u*(ly2-ly);
-
-    return distsqrd(x,y,px,py);
+    return distsqrd(lx+u*(lx2-lx),ly+u*(ly2-ly),px,py);
   }
   public static float getDis(float lx,float ly,float lx2,float ly2, float px,float py){
     
@@ -116,17 +109,23 @@ public class Util {
 
         // Special Cases
         // x,y, x2,y2 and lx,ly are colinear and lx,ly lies on segment x,yx2,y2
-        if (o1 == 0 && onSegment(x,y, lx,ly, x2,y2)) return true;
+        if (
+         (o1 == 0 && onSegment(x,y, lx,ly, x2,y2))|| //return true;
 
         // x,y, x2,y2 and lx,ly are colinear and lx2,ly2 lies on segment x,yx2,y2
-        if (o2 == 0 && onSegment(x,y, lx2,ly2, x2,y2)) return true;
+         (o2 == 0 && onSegment(x,y, lx2,ly2, x2,y2))|| //return true;
 
         // lx,ly, lx2,ly2 and x,y are colinear and x,y lies on segment lx,lylx2,ly2
-        if (o3 == 0 && onSegment(lx,ly, x,y, lx2,ly2)) return true;
+         (o3 == 0 && onSegment(lx,ly, x,y, lx2,ly2))|| //return true;
 
          // lx,ly, lx2,ly2 and x2,y2 are colinear and x2,y2 lies on segment lx,lylx2,ly2
-        if (o4 == 0 && onSegment(lx,ly, x2,y2, lx2,ly2)) return true;
-
+         (o4 == 0 && onSegment(lx,ly, x2,y2, lx2,ly2)) 
+        )
+        {
+         return true;
+        }
+        
+        
         return false; // Doesn't fall in any of the above cases
     }
    /* boolean isPolygonsIntersecting(Polygon a, Polygon b)
